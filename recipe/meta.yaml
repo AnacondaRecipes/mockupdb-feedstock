@@ -11,7 +11,8 @@ source:
   sha256: "{{ sha256 }}"
 
 build:
-  skip: True  # [py<34]
+  # No mongodb on s390x
+  skip: True  # [py<34 or s390x]
   number: 0
   script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed -vvv --no-build-isolation
 
@@ -30,12 +31,16 @@ test:
   imports:
     - mockupdb
   requires:
-    - pymongo >=3,<4
+    - pymongo >=3,<4  # [not py>311]
+    # XXX even though we're not running the tests for py>311, we need
+    # *a* mongodb, which has a vendored bson, which mockupdb requires
+    # (for pip check).
+    - pymongo >=3     # [py>311]
     - pip
     - pytest
   commands:
     - pip check
-    - pytest -v tests
+    - pytest -v tests  # [not py>311]
 
 about:
   home: https://github.com/ajdavis/mongo-mockup-db
