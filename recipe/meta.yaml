@@ -14,7 +14,7 @@ build:
   # No mongodb on s390x
   skip: True  # [py<34 or s390x]
   number: 0
-  script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed -vvv --no-build-isolation
+  script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-build-isolation -vv
 
 requirements:
   host:
@@ -35,7 +35,7 @@ test:
     # XXX even though we're not running the tests for py>311, we need
     # *a* mongodb, which has a vendored bson, which mockupdb requires
     # (for pip check).
-    - pymongo >=3     # [py>311 or (py>=310 and osx and arm64)]
+    - pymongo >=3     # [py>311 or (py>=310 and (osx and arm64))]
     - pip
     - pytest
   commands:
