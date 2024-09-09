@@ -32,13 +32,9 @@ test:
   imports:
     - mockupdb
   requires:
-    # added constraint of pymongo<4 as the tests used functions
-    # removed in pymongo 4.0
+    # Add a constraint of pymongo<4 as the tests use functions removed
+    # in pymongo 4.0
     - pymongo >=3,<4  # [not (py>311 or (py>310 and osx and arm64) )]
-    # XXX even though we're not running the tests for py>311, we need
-    # *a* mongodb, which has a vendored bson, which mockupdb requires
-    # (for pip check).
-    - pymongo >=3     # [py>311 or (py>=310 and (osx and arm64))]
     - pip
     - pytest
   commands:
