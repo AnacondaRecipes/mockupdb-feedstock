@@ -1,6 +1,6 @@
 {% set name = "mockupdb" %}
-{% set version = "1.7.0" %}
-{% set sha256 = "6cdcfdd14e40a11bb01a8972502d3f6c0a96bccfd8774e19385bf3b38b852d63" %}
+{% set version = "1.8.1" %}
+{% set sha256 = "d36d0e5b6445ff9141e34d012fa2b5dfe589847aa1e3ecb8d774074962af944e" %}
 
 package:
   name: "{{ name|lower }}"
@@ -11,22 +11,35 @@ source:
   sha256: "{{ sha256 }}"
 
 build:
+  # No mongodb on s390x
+  skip: True  # [py<34 or s390x]
   number: 0
-  noarch: python
-  script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vvv "
+  script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-build-isolation -vv
 
 requirements:
   host:
     - pip
     - python
+    - setuptools
+    - wheel
   run:
     - python
+    - pymongo >=3
 
 test:
+  source_files:
+    - tests
   imports:
     - mockupdb
   requires:
-    - pymongo >=3
+    # Add a constraint of pymongo<4 as the tests use functions removed
+    # in pymongo 4.0
+    - pymongo >=3,<4  # [not (py>311 or (py>310 and osx and arm64) )]
+    - pip
+    - pytest
+  commands:
+    - pip check
+    - pytest -v tests  # [not (py>311 or (py>310 and osx and arm64) )]
 
 about:
   home: https://github.com/ajdavis/mongo-mockup-db
@@ -34,7 +47,10 @@ about:
   license_family: Apache
   license_file: LICENSE
   summary: MongoDB Wire Protocol server library
-  doc_url: http://mockupdb.readthedocs.org/
+  description: |
+    Mock server for testing MongoDB clients and creating MongoDB Wire
+    Protocol servers.
+  doc_url: https://mockupdb.readthedocs.io/
   dev_url: https://github.com/ajdavis/mongo-mockup-db
 
 extra:
