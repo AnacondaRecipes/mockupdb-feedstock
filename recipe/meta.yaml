@@ -1,6 +1,5 @@
 {% set name = "mockupdb" %}
 {% set version = "1.8.1" %}
-{% set sha256 = "d36d0e5b6445ff9141e34d012fa2b5dfe589847aa1e3ecb8d774074962af944e" %}
 
 package:
   name: {{ name|lower }}
@@ -41,7 +40,7 @@ test:
     - pytest -v tests  # [not (py>311 or (py>310 and osx and arm64) )]
 
 about:
-  home: https://github.com/ajdavis/mongo-mockup-db
+  home: https://github.com/mongodb-labs/mongo-mockup-db
   license: Apache-2.0
   license_family: Apache
   license_file: LICENSE
@@ -49,7 +48,7 @@ about:
   description: |
     Mock server for testing MongoDB clients and creating MongoDB Wire Protocol servers.
   doc_url: https://mockupdb.readthedocs.io/
-  dev_url: https://github.com/ajdavis/mongo-mockup-db
+  dev_url: https://github.com/mongodb-labs/mongo-mockup-db
 
 extra:
   recipe-maintainers:
