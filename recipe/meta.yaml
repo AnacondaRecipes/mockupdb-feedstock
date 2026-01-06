@@ -30,9 +30,7 @@ test:
   imports:
     - mockupdb
   requires:
-    # Add a constraint of pymongo<4 as the tests use functions removed
-    # in pymongo 4.0
-    - pymongo >=3,<4  # [not py>311]
+    # Do not use pymongo in the tests because it's a circular dependency
     - pip
     - pytest
   commands:
