@@ -3,17 +3,16 @@
 {% set sha256 = "d36d0e5b6445ff9141e34d012fa2b5dfe589847aa1e3ecb8d774074962af944e" %}
 
 package:
-  name: "{{ name|lower }}"
-  version: "{{ version }}"
+  name: {{ name|lower }}
+  version: {{ version }}
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: "{{ sha256 }}"
+  sha256: d36d0e5b6445ff9141e34d012fa2b5dfe589847aa1e3ecb8d774074962af944e
 
 build:
-  # No mongodb on s390x
-  skip: True  # [py<34 or s390x]
-  number: 0
+  skip: True  # [py<34]
+  number: 1
   script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-build-isolation -vv
 
 requirements:
@@ -48,8 +47,7 @@ about:
   license_file: LICENSE
   summary: MongoDB Wire Protocol server library
   description: |
-    Mock server for testing MongoDB clients and creating MongoDB Wire
-    Protocol servers.
+    Mock server for testing MongoDB clients and creating MongoDB Wire Protocol servers.
   doc_url: https://mockupdb.readthedocs.io/
   dev_url: https://github.com/ajdavis/mongo-mockup-db
 
